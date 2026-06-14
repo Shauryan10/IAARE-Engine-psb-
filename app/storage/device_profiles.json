@@ -1,0 +1,18 @@
+[
+    {
+        "username": "rahul",
+        "device_name": "Rahul MacBook",
+        "device_fingerprint": "7196326ac025b0f7816f48999a0e040aaab5fa002b46b89f2778f49189181552",
+        "device_info": {
+            "device_name": "Rahul MacBook",
+            "browser": "Chrome",
+            "os": "macOS",
+            "timezone": "Asia/Kolkata",
+            "language": "en-IN",
+            "screen_size": "1440x900"
+        },
+        "trusted": true,
+        "created_at": "2026-06-13T10:40:05.179233",
+        "last_seen_at": "2026-06-13T10:40:51.060272"
+    }
+]
