@@ -1,53 +1,43 @@
-GEO_MOCK_DATA = {
-    "49.36.10.10": {
-        "city": "Delhi",
-        "state": "Delhi",
-        "country": "India",
-        "lat": 28.7041,
-        "lon": 77.1025
-    },
-    "49.36.20.20": {
-        "city": "Noida",
-        "state": "Uttar Pradesh",
-        "country": "India",
-        "lat": 28.5355,
-        "lon": 77.3910
-    },
-    "103.21.58.10": {
-        "city": "Bangalore",
-        "state": "Karnataka",
-        "country": "India",
-        "lat": 12.9716,
-        "lon": 77.5946
-    },
-    "51.140.10.10": {
-        "city": "London",
-        "state": "England",
-        "country": "United Kingdom",
-        "lat": 51.5072,
-        "lon": -0.1276
-    },
-    "8.8.8.8": {
-        "city": "Mountain View",
-        "state": "California",
-        "country": "United States",
-        "lat": 37.3861,
-        "lon": -122.0839
-    }
-}
+import requests
 
 
 def get_geo_location(ip_address: str):
-    return GEO_MOCK_DATA.get(
-        ip_address,
-        {
-            "city": "Unknown",
-            "state": "Unknown",
-            "country": "Unknown",
-            "lat": 0,
-            "lon": 0
+    try:
+        response = requests.get(
+            f"http://ip-api.com/json/{ip_address}",
+            timeout=5
+        )
+
+        data = response.json()
+
+        if data.get("status") != "success":
+            return unknown_geo(ip_address)
+
+        return {
+            "city": data.get("city", "Unknown"),
+            "state": data.get("regionName", "Unknown"),
+            "country": data.get("country", "Unknown"),
+            "lat": data.get("lat", 0),
+            "lon": data.get("lon", 0),
+            "ip": ip_address,
+            "isp": data.get("isp", "Unknown")
         }
-    )
+
+    except Exception as e:
+        print("Geo Error:", e)
+        return unknown_geo(ip_address)
+
+
+def unknown_geo(ip_address: str):
+    return {
+        "city": "Unknown",
+        "state": "Unknown",
+        "country": "Unknown",
+        "lat": 0,
+        "lon": 0,
+        "ip": ip_address,
+        "isp": "Unknown"
+    }
 
 
 def calculate_geo_risk(previous_geo: dict, current_geo: dict):

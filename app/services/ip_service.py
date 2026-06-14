@@ -4,6 +4,19 @@ from datetime import datetime
 from app.services.geo_service import get_geo_location, calculate_geo_risk
 from app.services.travel_service import detect_impossible_travel
 
+def get_client_ip(request):
+    forwarded_for = request.headers.get("x-forwarded-for")
+
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip()
+
+    real_ip = request.headers.get("x-real-ip")
+
+    if real_ip:
+        return real_ip
+
+    return request.client.host
+
 LOGIN_HISTORY_FILE = "app/storage/login_history.json"
 
 

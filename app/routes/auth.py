@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from app.services.ip_service import get_client_ip
 from app.services.user_service import (
     register_user,
     login_user,
@@ -118,15 +119,18 @@ def check_device_route(data: dict):
 
 
 @router.post("/check-network")
-def check_network_route(data: dict):
+def check_network_route(data: dict, request: Request):
     username = data.get("username")
     ip_address = data.get("ip_address")
 
-    if not username or not ip_address:
+    if not username:
         raise HTTPException(
             status_code=400,
-            detail="Username and ip_address are required"
+            detail="Username is required"
         )
+
+    if not ip_address:
+        ip_address = get_client_ip(request)
 
     result = check_network_security(username, ip_address)
 
@@ -134,5 +138,3 @@ def check_network_route(data: dict):
         raise HTTPException(status_code=404, detail=result["message"])
 
     return result
-
-    

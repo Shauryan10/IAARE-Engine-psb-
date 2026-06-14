@@ -1,1 +1,80 @@
-[]
+[
+    {
+        "username": "rahul",
+        "ip_address": "49.36.10.10",
+        "geo": {
+            "city": "Delhi",
+            "state": "Delhi",
+            "country": "India",
+            "lat": 28.7041,
+            "lon": 77.1025
+        },
+        "timestamp": "2026-06-14T10:59:18.151018",
+        "network_risk_score": 0,
+        "network_risk_status": "safe"
+    },
+    {
+        "username": "rahul",
+        "ip_address": "49.36.180.64",
+        "geo": {
+            "city": "Unknown",
+            "state": "Unknown",
+            "country": "Unknown",
+            "lat": 0,
+            "lon": 0,
+            "ip": "Unknown",
+            "isp": "Unknown"
+        },
+        "timestamp": "2026-06-14T11:10:58.585471",
+        "network_risk_score": 100,
+        "network_risk_status": "critical"
+    },
+    {
+        "username": "rahul",
+        "ip_address": "8.8.8.8",
+        "geo": {
+            "city": "Approximate city unavailable",
+            "state": "Approximate state unavailable",
+            "country": "Unknown",
+            "lat": 0,
+            "lon": 0,
+            "ip": "8.8.8.8",
+            "isp": "Unknown ISP"
+        },
+        "timestamp": "2026-06-14T11:16:10.954445",
+        "network_risk_score": 35,
+        "network_risk_status": "medium"
+    },
+    {
+        "username": "rahul",
+        "ip_address": "8.8.8.8",
+        "geo": {
+            "city": "Ashburn",
+            "state": "Virginia",
+            "country": "United States",
+            "lat": 39.03,
+            "lon": -77.5,
+            "ip": "8.8.8.8",
+            "isp": "Google LLC"
+        },
+        "timestamp": "2026-06-14T11:20:12.722441",
+        "network_risk_score": 100,
+        "network_risk_status": "critical"
+    },
+    {
+        "username": "rahul",
+        "ip_address": " 49.36.180.64",
+        "geo": {
+            "city": "Unknown",
+            "state": "Unknown",
+            "country": "Unknown",
+            "lat": 0,
+            "lon": 0,
+            "ip": " 49.36.180.64",
+            "isp": "Unknown"
+        },
+        "timestamp": "2026-06-14T11:22:50.449919",
+        "network_risk_score": 100,
+        "network_risk_status": "critical"
+    }
+]
