@@ -6,7 +6,7 @@ def calculate_distance_km(lat1, lon1, lat2, lon2):
     radius = 6371
 
     lat1 = math.radians(lat1)
-    lon1 = math.radians(lon1)
+    lon1 = math.radians(lon1)   
     lat2 = math.radians(lat2)
     lon2 = math.radians(lon2)
 

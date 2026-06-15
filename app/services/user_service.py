@@ -1,6 +1,12 @@
 import json
 import uuid
 from datetime import datetime
+
+from app.services.behavior_service import (
+    calculate_behavior_risk,
+    update_behavior
+)
+
 from app.services.ip_service import analyze_network_risk
 from app.services.device_service import check_device_trust
 from app.services.authenticator_service import (
@@ -321,4 +327,31 @@ def check_network_security(username: str, ip_address: str):
         "status": "success",
         "username": username,
         "network_security": network_result
+    }
+
+def analyze_behavior(
+    username,
+    location,
+    device_name
+):
+    current_hour = datetime.now().hour
+
+    behavior_result = calculate_behavior_risk(
+        username,
+        current_hour,
+        location,
+        device_name
+    )
+
+    update_behavior(
+        username,
+        current_hour,
+        location,
+        device_name
+    )
+
+    return {
+        "status": "success",
+        "username": username,
+        "behavior_analysis": behavior_result
     }

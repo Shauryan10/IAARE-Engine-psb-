@@ -1,0 +1,20 @@
+[
+    {
+        "username": "rahul",
+        "login_hours": [
+            13,
+            13,
+            13
+        ],
+        "locations": [
+            "Delhi",
+            "London",
+            "London"
+        ],
+        "devices": [
+            "Rahul MacBook",
+            "Rahul MacBook",
+            "Unknown Windows Laptop"
+        ]
+    }
+]

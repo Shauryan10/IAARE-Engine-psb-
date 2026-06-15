@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Request
 from app.services.ip_service import get_client_ip
+
 from app.services.user_service import (
     register_user,
     login_user,
@@ -8,7 +9,8 @@ from app.services.user_service import (
     setup_authenticator,
     verify_authenticator,
     check_user_device,
-    check_network_security
+    check_network_security,
+    analyze_behavior
 )
 
 
@@ -136,5 +138,26 @@ def check_network_route(data: dict, request: Request):
 
     if result["status"] == "failed":
         raise HTTPException(status_code=404, detail=result["message"])
+
+    return result
+
+@router.post("/analyze-behavior")
+def analyze_behavior_route(data: dict):
+
+    username = data.get("username")
+    location = data.get("location")
+    device_name = data.get("device_name")
+
+    if not username:
+        raise HTTPException(
+            status_code=400,
+            detail="Username required"
+        )
+
+    result = analyze_behavior(
+        username,
+        location,
+        device_name
+    )
 
     return result

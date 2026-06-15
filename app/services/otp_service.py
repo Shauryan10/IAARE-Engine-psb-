@@ -42,6 +42,8 @@ def create_otp(username: str):
     return otp_record
 
 
+
+
 def verify_otp(username: str, entered_otp: str):
     otps = load_otps()
 
