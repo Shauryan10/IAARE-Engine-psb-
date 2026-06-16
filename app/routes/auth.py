@@ -10,7 +10,8 @@ from app.services.user_service import (
     verify_authenticator,
     check_user_device,
     check_network_security,
-    analyze_behavior
+    analyze_behavior,
+    calculate_complete_risk
 )
 
 
@@ -160,4 +161,9 @@ def analyze_behavior_route(data: dict):
         device_name
     )
 
+    return result
+
+@router.post("/calculate-risk")
+def calculate_risk_route(data: dict):
+    result = calculate_complete_risk(data)
     return result

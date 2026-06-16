@@ -1,6 +1,7 @@
 import json
 import uuid
 from datetime import datetime
+from app.services.risk_engine_service import calculate_final_risk
 
 from app.services.behavior_service import (
     calculate_behavior_risk,
@@ -354,4 +355,23 @@ def analyze_behavior(
         "status": "success",
         "username": username,
         "behavior_analysis": behavior_result
+    }
+
+def calculate_complete_risk(data: dict):
+    sim_risk_score = data.get("sim_risk_score", 0)
+    device_risk_score = data.get("device_risk_score", 0)
+    network_risk_score = data.get("network_risk_score", 0)
+    behavior_risk_score = data.get("behavior_risk_score", 0)
+
+    result = calculate_final_risk(
+        sim_risk_score,
+        device_risk_score,
+        network_risk_score,
+        behavior_risk_score
+    )
+
+    return {
+        "status": "success",
+        "message": "Final adaptive risk score calculated successfully",
+        "final_risk_analysis": result
     }
