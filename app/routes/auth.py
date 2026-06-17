@@ -11,7 +11,8 @@ from app.services.user_service import (
     check_user_device,
     check_network_security,
     analyze_behavior,
-    calculate_complete_risk
+    calculate_complete_risk,
+    adaptive_login_decision
 )
 
 
@@ -166,4 +167,11 @@ def analyze_behavior_route(data: dict):
 @router.post("/calculate-risk")
 def calculate_risk_route(data: dict):
     result = calculate_complete_risk(data)
+    return result
+
+@router.post("/adaptive-auth")
+def adaptive_auth_route(data: dict):
+
+    result = adaptive_login_decision(data)
+
     return result

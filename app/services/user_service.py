@@ -2,6 +2,9 @@ import json
 import uuid
 from datetime import datetime
 from app.services.risk_engine_service import calculate_final_risk
+from app.services.adaptive_auth_service import (
+    process_adaptive_authentication
+)
 
 from app.services.behavior_service import (
     calculate_behavior_risk,
@@ -374,4 +377,18 @@ def calculate_complete_risk(data: dict):
         "status": "success",
         "message": "Final adaptive risk score calculated successfully",
         "final_risk_analysis": result
+    }
+
+def adaptive_login_decision(data: dict):
+
+    risk_level = data.get("risk_level")
+
+    result = process_adaptive_authentication(
+        risk_level
+    )
+
+    return {
+        "status": "success",
+        "risk_level": risk_level,
+        "adaptive_authentication": result
     }
