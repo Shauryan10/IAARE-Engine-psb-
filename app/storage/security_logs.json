@@ -1,0 +1,16 @@
+[
+    {
+        "timestamp": "2026-06-18T15:11:42.545620",
+        "username": "rahul",
+        "ip_address": "192.168.1.10",
+        "location": "Delhi",
+        "device_name": "Rahul MacBook",
+        "sim_risk_score": 10,
+        "device_risk_score": 15,
+        "network_risk_score": 20,
+        "behavior_risk_score": 5,
+        "final_risk_score": 50,
+        "risk_level": "medium",
+        "authentication_decision": "require_otp"
+    }
+]

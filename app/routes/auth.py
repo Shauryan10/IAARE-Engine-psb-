@@ -12,7 +12,9 @@ from app.services.user_service import (
     check_network_security,
     analyze_behavior,
     calculate_complete_risk,
-    adaptive_login_decision
+    adaptive_login_decision,
+    log_security_event,
+    fetch_security_logs
 )
 
 
@@ -175,3 +177,14 @@ def adaptive_auth_route(data: dict):
     result = adaptive_login_decision(data)
 
     return result
+
+@router.post("/security-log")
+def security_log_route(data: dict):
+
+    return log_security_event(data)
+
+
+@router.get("/security-logs")
+def security_logs_route():
+
+    return fetch_security_logs()

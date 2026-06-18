@@ -1,6 +1,10 @@
 import json
 import uuid
 from datetime import datetime
+from app.services.audit_service import (
+    create_security_log,
+    get_security_logs
+)
 from app.services.risk_engine_service import calculate_final_risk
 from app.services.adaptive_auth_service import (
     process_adaptive_authentication
@@ -391,4 +395,35 @@ def adaptive_login_decision(data: dict):
         "status": "success",
         "risk_level": risk_level,
         "adaptive_authentication": result
+    }
+
+def log_security_event(data: dict):
+
+    result = create_security_log(
+        username=data.get("username"),
+        ip_address=data.get("ip_address"),
+        location=data.get("location"),
+        device_name=data.get("device_name"),
+        sim_risk_score=data.get("sim_risk_score", 0),
+        device_risk_score=data.get("device_risk_score", 0),
+        network_risk_score=data.get("network_risk_score", 0),
+        behavior_risk_score=data.get("behavior_risk_score", 0),
+        final_risk_score=data.get("final_risk_score", 0),
+        risk_level=data.get("risk_level"),
+        authentication_decision=data.get(
+            "authentication_decision"
+        )
+    )
+
+    return {
+        "status": "success",
+        "message": "Security event logged successfully",
+        "log": result
+    }
+
+
+def fetch_security_logs():
+    return {
+        "status": "success",
+        "logs": get_security_logs()
     }
