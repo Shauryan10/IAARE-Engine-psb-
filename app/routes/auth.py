@@ -14,7 +14,8 @@ from app.services.user_service import (
     calculate_complete_risk,
     adaptive_login_decision,
     log_security_event,
-    fetch_security_logs
+    fetch_security_logs,
+    complete_security_pipeline
 )
 
 
@@ -188,3 +189,8 @@ def security_log_route(data: dict):
 def security_logs_route():
 
     return fetch_security_logs()
+
+@router.post("/complete-security-check")
+def complete_security_check_route(data: dict):
+
+    return complete_security_pipeline(data)

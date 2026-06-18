@@ -103,5 +103,7 @@ def calculate_behavior_risk(username, current_hour, current_location, current_de
     return {
         "behavior_risk_score": risk_score,
         "behavior_status": status,
-        "reasons": reasons
+        "reasons": reasons if reasons else [
+            "User behavior matches established profile"
+        ]
     }

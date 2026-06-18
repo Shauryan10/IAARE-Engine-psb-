@@ -5,6 +5,9 @@ from app.services.audit_service import (
     create_security_log,
     get_security_logs
 )
+from app.services.integration_service import (
+    run_complete_security_analysis
+)
 from app.services.risk_engine_service import calculate_final_risk
 from app.services.adaptive_auth_service import (
     process_adaptive_authentication
@@ -427,3 +430,9 @@ def fetch_security_logs():
         "status": "success",
         "logs": get_security_logs()
     }
+
+def complete_security_pipeline(data: dict):
+
+    result = run_complete_security_analysis(data)
+
+    return result

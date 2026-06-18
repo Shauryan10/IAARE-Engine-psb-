@@ -4,16 +4,31 @@
         "login_hours": [
             13,
             13,
-            13
+            13,
+            15,
+            15,
+            15,
+            15,
+            15
         ],
         "locations": [
             "Delhi",
+            "London",
+            "London",
+            "Delhi",
+            "London",
+            "London",
             "London",
             "London"
         ],
         "devices": [
             "Rahul MacBook",
             "Rahul MacBook",
+            "Unknown Windows Laptop",
+            "Rahul MacBook",
+            "Unknown Windows Laptop",
+            "Unknown Windows Laptop",
+            "Unknown Windows Laptop",
             "Unknown Windows Laptop"
         ]
     }
