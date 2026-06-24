@@ -77,6 +77,7 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
   // 2FA State
   const [showOtp, setShowOtp] = useState(false);
   const [otpCode, setOtpCode] = useState('');
+  const [riskResult, setRiskResult] = useState(null);
   
 
   const handleSubmit = async (e) => {
@@ -114,9 +115,10 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
       const decision =
         response.data.risk_analysis.authentication_decision;
   
-      alert(
-        `Risk Level: ${riskLevel}\nDecision: ${decision}`
-      );
+      setRiskResult({
+          riskLevel,
+          decision
+        });
   
     } catch (err) {
       setError(err.message);
@@ -257,6 +259,42 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
                   >
                     {isLoading ? 'Processing...' : 'Log In'}
                   </button>
+                  {riskResult && (
+  <div className="mt-6 p-5 border rounded-lg bg-white shadow-sm">
+    <h3 className="font-bold text-lg mb-3 text-gray-800">
+      Security Assessment
+    </h3>
+
+    <div className="flex items-center gap-2 mb-3">
+      <span className="font-semibold">
+        Risk Level:
+      </span>
+
+      <span
+        className={`px-3 py-1 rounded-full text-sm font-semibold
+        ${
+          riskResult.riskLevel === "low"
+            ? "bg-green-100 text-green-700"
+            : riskResult.riskLevel === "medium"
+            ? "bg-yellow-100 text-yellow-700"
+            : "bg-red-100 text-red-700"
+        }`}
+      >
+        {riskResult.riskLevel.toUpperCase()}
+      </span>
+    </div>
+
+    <div>
+      <span className="font-semibold">
+        Decision:
+      </span>
+
+      <p className="mt-1 text-gray-700">
+        {riskResult.decision}
+      </p>
+    </div>
+  </div>
+)}
                 </form>
               </>
             ) : (
