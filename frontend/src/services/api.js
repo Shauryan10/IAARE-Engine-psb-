@@ -101,3 +101,11 @@ export const marketAPI = {
 };
 
 export default apiClient;
+
+export const iaareAPI = {
+  completeSecurityCheck: (payload) =>
+    apiClient.post("/auth/complete-security-check", payload),
+
+  getSecurityLogs: () =>
+    apiClient.get("/auth/security-logs"),
+};

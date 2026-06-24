@@ -9,7 +9,8 @@
             15,
             15,
             15,
-            15
+            15,
+            11
         ],
         "locations": [
             "Delhi",
@@ -19,7 +20,8 @@
             "London",
             "London",
             "London",
-            "London"
+            "London",
+            "Delhi"
         ],
         "devices": [
             "Rahul MacBook",
@@ -29,7 +31,8 @@
             "Unknown Windows Laptop",
             "Unknown Windows Laptop",
             "Unknown Windows Laptop",
-            "Unknown Windows Laptop"
+            "Unknown Windows Laptop",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
         ]
     }
 ]

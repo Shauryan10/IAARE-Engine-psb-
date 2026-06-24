@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { authAPI } from '../services/api';
+import { iaareAPI } from '../services/api';
+
 
 // Inline SVG for a minimal shield brand mark (matches Sidebar aesthetic, red version)
 const BrandMark = () => (
@@ -76,31 +77,49 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
   // 2FA State
   const [showOtp, setShowOtp] = useState(false);
   const [otpCode, setOtpCode] = useState('');
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userId.trim() || !password.trim()) {
-      setError('Please enter both User ID and Password.');
+  
+    if (!userId.trim()) {
+      setError("Please enter username");
       return;
     }
-    
-    setError('');
+  
+    setError("");
     setIsLoading(true);
-    
+  
     try {
-      const response = await authAPI.login(userId, password);
-      
-      if (response.data.otp_required) {
-        setShowOtp(true);
-      } else {
-        // Direct login (if 2FA was disabled)
-        const { access_token, refresh_token } = response.data;
-        localStorage.setItem('access_token', access_token);
-        localStorage.setItem('refresh_token', refresh_token);
-        onLogin({ userId, accountType });
-      }
+      const payload = {
+        username: userId,
+  
+        ip_address: "192.168.1.10",
+        location: "Delhi",
+        device_name: navigator.userAgent,
+  
+        sim_risk_score: 10,
+        device_risk_score: 15,
+        network_risk_score: 20
+      };
+  
+      const response =
+        await iaareAPI.completeSecurityCheck(payload);
+  
+      console.log("IAARE RESPONSE:", response.data);
+  
+      const riskLevel =
+        response.data.risk_analysis.risk_level;
+  
+      const decision =
+        response.data.risk_analysis.authentication_decision;
+  
+      alert(
+        `Risk Level: ${riskLevel}\nDecision: ${decision}`
+      );
+  
     } catch (err) {
-      setError(err.message || 'Invalid credentials. Please try again.');
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
