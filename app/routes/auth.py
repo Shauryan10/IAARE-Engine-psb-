@@ -24,10 +24,16 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/register")
 def register(data: dict):
+
+    print("REGISTER ROUTE DATA:", data)
+
     result = register_user(data)
 
     if result["status"] == "failed":
-        raise HTTPException(status_code=400, detail=result["message"])
+        raise HTTPException(
+            status_code=400,
+            detail=result["message"]
+        )
 
     return result
 

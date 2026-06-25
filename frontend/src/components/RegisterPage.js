@@ -11,16 +11,16 @@ const BrandMark = () => (
 );
 
 const RegisterPage = ({ onRegister, onBackToLogin }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setError('Please enter both Email and Password.');
+    if (!username.trim() || !password.trim()) {
+      setError('Please enter both Username and Password.');
       return;
     }
     if (password.length < 8) {
@@ -32,7 +32,12 @@ const RegisterPage = ({ onRegister, onBackToLogin }) => {
     setIsLoading(true);
     
     try {
-      const response = await authAPI.register(email, password, fullName);
+      console.log("REGISTER PAYLOAD:", {
+        username,
+        password,
+        mobileNumber
+      });
+      const response = await authAPI.register(username, password, mobileNumber);
       const { access_token, refresh_token } = response.data;
       
       localStorage.setItem('access_token', access_token);
@@ -67,19 +72,19 @@ const RegisterPage = ({ onRegister, onBackToLogin }) => {
           </h1>
 
           <form onSubmit={handleSubmit}>
-            <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2">Full Name</label>
+            <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2">Username</label>
             <input
               type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full h-[52px] px-3 border border-[#b0b0b0] rounded-sm mb-6 text-[15px]"
             />
 
-            <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2">Email (User ID)</label>
+            <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2">Mobile Number</label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
               className="w-full h-[52px] px-3 border border-[#b0b0b0] rounded-sm mb-6 text-[15px]"
               required
             />

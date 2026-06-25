@@ -43,27 +43,46 @@ def save_users(users):
         json.dump(users, file, indent=4)
 
 
-def find_user_by_username(username: str):
+def find_user_by_username(username):
+
     users = load_users()
 
+    print("SEARCHING FOR:", username)
+    print("TOTAL USERS:", len(users))
+
     for user in users:
-        if user["username"] == username:
+        print("CHECKING USER:", user.get("username"))
+
+        if user.get("username") == username:
+            print("MATCH FOUND")
             return user
 
+    print("NO MATCH FOUND")
     return None
 
 
 def register_user(data: dict):
+
+    print("REGISTER DATA RECEIVED:", data)
+
     username = data.get("username")
     password = data.get("password")
     mobile_number = data.get("mobile_number")
 
-    if find_user_by_username(username):
+    print("USERNAME:", username)
+    print("PASSWORD:", password)
+    print("MOBILE:", mobile_number)
+
+    existing_user = find_user_by_username(username)
+    print("EXISTING USER:", existing_user)
+
+    if existing_user:
         return {
             "status": "failed",
             "message": "Username already exists"
         }
 
+    
     user = {
         "user_id": str(uuid.uuid4()),
         "username": username,
@@ -82,12 +101,8 @@ def register_user(data: dict):
     return {
         "status": "success",
         "message": "User registered successfully",
-        "user_id": user["user_id"],
-        "username": username,
-        "mobile_number": mobile_number,
-        "sim_profile": user["sim_profile"]
+        "user_id": user["user_id"]
     }
-
 
 def login_user(data: dict):
     username = data.get("username")

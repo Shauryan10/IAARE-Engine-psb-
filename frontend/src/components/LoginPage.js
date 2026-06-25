@@ -87,6 +87,10 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
       setError("Please enter username");
       return;
     }
+    if (!password.trim()) {
+      setError("Please enter password");
+      return;
+    }
   
     setError("");
     setIsLoading(true);
@@ -119,6 +123,36 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
           riskLevel,
           decision
         });
+      if (decision === "allow") {
+          onLogin({
+            userId,
+            accountType
+          });
+        }
+        
+      else if (
+          decision === "require_otp"
+        ) {
+          setShowOtp(true);
+        }
+        
+      else if (
+          decision === "require_otp_plus_authenticator"
+        ) {
+          setShowOtp(true);
+        
+          setError(
+            "High Risk Login Detected. OTP + Authenticator Verification Required."
+          );
+        }
+        
+      else if (
+          decision === "block"
+        ) {
+          setError(
+            "Access Blocked Due To Critical Security Risk."
+          );
+        }
   
     } catch (err) {
       setError(err.message);
@@ -138,7 +172,7 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
     setIsLoading(true);
 
     try {
-      const response = await authAPI.verifyOtp(userId, otpCode);
+      const response = await iaareAPI.verifyOtp(userId, otpCode);
       const { access_token, refresh_token } = response.data;
       
       localStorage.setItem('access_token', access_token);

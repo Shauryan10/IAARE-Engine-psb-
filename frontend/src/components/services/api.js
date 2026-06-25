@@ -36,12 +36,75 @@ apiClient.interceptors.response.use(
 );
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
+
+
 export const authAPI = {
   login:    (email, password) =>
     apiClient.post('/api/v1/auth/login',    { email, password }),
-  register: (email, password, full_name) =>
-    apiClient.post('/api/v1/auth/register', { email, password, full_name }),
+  register: (username, password, mobile_number) =>
+    apiClient.post('/api/v1/auth/register', { username, password, mobile_number }),
   me:       () => apiClient.get('/api/v1/auth/me'),
+};
+
+// ── IAARE Adaptive Authentication ────────────────────────────────────────────
+export const iaareAPI = {
+  requestOtp: (username) =>
+    apiClient.post('/auth/request-otp', { username }),
+
+  verifyOtp: (username, otp) =>
+    apiClient.post('/auth/verify-otp', {
+      username,
+      otp
+    }),
+
+  setupAuthenticator: (username) =>
+    apiClient.post('/auth/setup-authenticator', {
+      username
+    }),
+
+  verifyAuthenticator: (username, totp_code) =>
+    apiClient.post('/auth/verify-authenticator', {
+      username,
+      totp_code
+    }),
+
+  checkDevice: (username, device_info) =>
+    apiClient.post('/auth/check-device', {
+      username,
+      device_info
+    }),
+
+  checkNetwork: (username, ip_address) =>
+    apiClient.post('/auth/check-network', {
+      username,
+      ip_address
+    }),
+
+  analyzeBehavior: (
+    username,
+    location,
+    device_name
+  ) =>
+    apiClient.post('/auth/analyze-behavior', {
+      username,
+      location,
+      device_name
+    }),
+
+  calculateRisk: (payload) =>
+    apiClient.post('/auth/calculate-risk', payload),
+
+  adaptiveAuth: (payload) =>
+    apiClient.post('/auth/adaptive-auth', payload),
+
+  securityLog: (payload) =>
+    apiClient.post('/auth/security-log', payload),
+
+  securityLogs: () =>
+    apiClient.get('/auth/security-logs'),
+
+  completeSecurityCheck: (payload) =>
+    apiClient.post('/auth/complete-security-check', payload),
 };
 
 // ── Net Worth ─────────────────────────────────────────────────────────────────
