@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { iaareAPI } from '../services/api';
+import { authAPI, iaareAPI} from '../services/api';
 
 
 // Inline SVG for a minimal shield brand mark (matches Sidebar aesthetic, red version)
@@ -96,20 +96,28 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
     setIsLoading(true);
   
     try {
-      const payload = {
-        username: userId,
-  
-        ip_address: "192.168.1.10",
-        location: "Delhi",
-        device_name: navigator.userAgent,
-  
-        sim_risk_score: 10,
-        device_risk_score: 15,
-        network_risk_score: 20
-      };
+      // Step 1 - Login
+await authAPI.login(
+  userId,
+  password
+);
+
+// Step 2 - Run Security Check
+const payload = {
+  username: userId,
+
+  ip_address: "192.168.1.10",
+  location: "Delhi",
+  device_name: navigator.userAgent,
+
+  sim_risk_score: 10,
+  device_risk_score: 15,
+  network_risk_score: 20
+};
+
   
       const response =
-        await iaareAPI.completeSecurityCheck(payload);
+        await authAPI.completeSecurityCheck(payload);
   
       console.log("IAARE RESPONSE:", response.data);
   
@@ -154,9 +162,22 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
           );
         }
   
-    } catch (err) {
-      setError(err.message);
-    } finally {
+    } catch(err){
+
+      console.error(err.response?.data);
+  
+      setError(
+  
+          err.response?.data?.detail ||
+  
+          err.response?.data?.message ||
+  
+          "Login failed."
+  
+      );
+  
+  }
+     finally {
       setIsLoading(false);
     }
   };
@@ -172,7 +193,7 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
     setIsLoading(true);
 
     try {
-      const response = await iaareAPI.verifyOtp(userId, otpCode);
+      const response = await authAPI.verifyOtp(userId, otpCode);
       const { access_token, refresh_token } = response.data;
       
       localStorage.setItem('access_token', access_token);

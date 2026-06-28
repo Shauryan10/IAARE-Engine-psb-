@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { authAPI } from '../services/api';
 
+
 const BrandMark = () => (
   <div className="flex items-center justify-center w-[52px] h-[52px] rounded-md bg-[#c8102e]">
     <svg width="26" height="26" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -27,6 +28,10 @@ const RegisterPage = ({ onRegister, onBackToLogin }) => {
       setError('Password must be at least 8 characters long.');
       return;
     }
+    if (!/^[0-9]{10}$/.test(mobileNumber)) {
+      setError("Enter a valid 10-digit mobile number.");
+      return;
+  }
     
     setError('');
     setIsLoading(true);
@@ -35,18 +40,26 @@ const RegisterPage = ({ onRegister, onBackToLogin }) => {
       console.log("REGISTER PAYLOAD:", {
         username,
         password,
-        mobileNumber
+        mobile_number: mobileNumber
       });
+      //const response = await authAPI.register(username, password, mobileNumber);
       const response = await authAPI.register(username, password, mobileNumber);
-      const { access_token, refresh_token } = response.data;
-      
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('refresh_token', refresh_token);
-      
+
+      console.log("REGISTER RESPONSE:", response.data);
+// Registration successful, return to login page
       onRegister();
+
+
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
-    } finally {
+      console.error(err.response?.data || err);
+  
+      setError(
+          err.response?.data?.detail ||
+          err.response?.data?.message ||
+          "Registration failed."
+      );
+  }
+     finally {
       setIsLoading(false);
     }
   };
@@ -92,6 +105,7 @@ const RegisterPage = ({ onRegister, onBackToLogin }) => {
             <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2">Password</label>
             <input
               type="password"
+              disabled={isLoading}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full h-[52px] px-3 border border-[#b0b0b0] rounded-sm mb-6 text-[15px]"
@@ -111,6 +125,7 @@ const RegisterPage = ({ onRegister, onBackToLogin }) => {
             <div className="text-center">
               <button
                 type="button"
+                disabled={isLoading}
                 onClick={onBackToLogin}
                 className="text-[13.5px] text-[#c8102e] hover:underline"
               >

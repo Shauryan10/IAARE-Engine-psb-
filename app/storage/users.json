@@ -41,5 +41,28 @@
         },
         "failed_login_attempts": 0,
         "locked": false
+    },
+    {
+        "user_id": "689510eb-b085-41de-9d09-f20feba25740",
+        "username": "heybhagwaan",
+        "password_hash": "$2b$12$n/NqFzqNs9ZvZ.r48qsUnupc9gt9IMGLAkIuLXbIpMOH2AU8kqOZu",
+        "mobile_number": "9810205521",
+        "created_at": "2026-06-28T17:02:55.000242",
+        "sim_profile": {
+            "registered_mobile": "9810205521",
+            "mobile_verified": true,
+            "sim_changed_recently": false,
+            "sim_changed_at": null,
+            "mobile_change_requested": false,
+            "mobile_change_requested_at": null,
+            "cooling_period_active": false,
+            "cooling_period_until": null,
+            "otp_failed_attempts": 0,
+            "otp_request_count": 0,
+            "last_sim_check_status": "safe",
+            "last_verified_at": "2026-06-28T17:02:55.000253"
+        },
+        "failed_login_attempts": 0,
+        "locked": false
     }
 ]

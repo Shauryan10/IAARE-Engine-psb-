@@ -124,5 +124,19 @@
         "final_risk_score": 60,
         "risk_level": "high",
         "authentication_decision": "otp_and_authenticator"
+    },
+    {
+        "timestamp": "2026-06-28T17:22:45.556573",
+        "username": "heybhagwaan",
+        "ip_address": "192.168.1.10",
+        "location": "Delhi",
+        "device_name": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+        "sim_risk_score": 10,
+        "device_risk_score": 15,
+        "network_risk_score": 20,
+        "behavior_risk_score": 0,
+        "final_risk_score": 45,
+        "risk_level": "medium",
+        "authentication_decision": "otp"
     }
 ]

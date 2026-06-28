@@ -36,16 +36,81 @@ apiClient.interceptors.response.use(
 );
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
+
+
 export const authAPI = {
-  login:     (email, password) =>
-    apiClient.post('/api/v1/auth/login',    { email, password }),
-  verifyOtp: (email, otp_code) =>
-    apiClient.post('/api/v1/auth/verify-otp', { email, otp_code }),
-  verifyChallenge: (password, captcha_answer, expected_captcha) =>
-    apiClient.post('/api/v1/auth/verify-challenge', { password, captcha_answer, expected_captcha }),
-  register:  (email, password, full_name) =>
-    apiClient.post('/api/v1/auth/register', { email, password, full_name }),
-  me:        () => apiClient.get('/api/v1/auth/me'),
+  login:    (username, password) =>
+    apiClient.post('/api/v1/auth/login',    { username, password }),
+  register: (username, password, mobile_number) =>
+    apiClient.post('/api/v1/auth/register', { username, password, mobile_number }),
+  //me:       () => apiClient.get('/auth/me'),
+
+
+// ── IAARE Adaptive Authentication ────────────────────────────────────────────
+
+  requestOtp: (username) =>
+    apiClient.post('/api/v1/auth/request-otp', { username }),
+
+  verifyOtp: (username, otp) =>
+    apiClient.post('/api/v1/auth/verify-otp', {
+      username,
+      otp
+    }),
+
+  setupAuthenticator: (username) =>
+    apiClient.post('/api/v1/auth/setup-authenticator', {
+      username
+    }),
+
+  verifyAuthenticator: (username, totp_code) =>
+    apiClient.post('/api/v1/auth/verify-authenticator', {
+      username,
+      totp_code
+    }),
+
+  checkDevice: (username, device_info) =>
+    apiClient.post('/api/v1/auth/check-device', {
+      username,
+      device_info
+    }),
+
+  checkNetwork: (username, ip_address) =>
+    apiClient.post('/api/v1/auth/check-network', {
+      username,
+      ip_address
+    }),
+
+  analyzeBehavior: (
+    username,
+    location,
+    device_name
+  ) =>
+    apiClient.post('/api/v1/auth/analyze-behavior', {
+      username,
+      location,
+      device_name
+    }),
+
+  calculateRisk: (payload) =>
+    apiClient.post('/api/v1/auth/calculate-risk', payload),
+
+  adaptiveAuth: (payload) =>
+    apiClient.post('/api/v1/auth/adaptive-auth', payload),
+
+  securityLog: (payload) =>
+    apiClient.post('/api/v1/auth/security-log', payload),
+
+  securityLogs: () =>
+    apiClient.get('/api/v1/auth/security-logs'),
+
+  completeSecurityCheck: (payload) => {
+    console.log("Calling:", "/api/v1/auth/complete-security-check");
+    return apiClient.post(
+        "/api/v1/auth/complete-security-check",
+        payload
+    );
+}
+
 };
 
 // ── Net Worth ─────────────────────────────────────────────────────────────────
@@ -63,6 +128,8 @@ export const aggregatorAPI = {
   createConsent:   (payload) => apiClient.post('/api/v1/aggregator/consents', payload),
   fetch:           (consent_id) => apiClient.post('/api/v1/aggregator/fetch', { consent_id }),
 };
+
+
 
 // ── Physical Assets ───────────────────────────────────────────────────────────
 export const assetsAPI = {
@@ -95,17 +162,39 @@ export const auditAPI = {
   getTrail: (limit = 10) => apiClient.get(`/api/v1/audit?limit=${limit}`),
 };
 
-// ── Market Data ───────────────────────────────────────────────────────────────
-export const marketAPI = {
-  live: () => apiClient.get('/api/v1/market/live'),
-};
-
 export default apiClient;
 
 export const iaareAPI = {
-  completeSecurityCheck: (payload) =>
-    apiClient.post("/auth/complete-security-check", payload),
 
-  getSecurityLogs: () =>
-    apiClient.get("/auth/security-logs"),
+  completeSecurityCheck: (payload) =>
+      apiClient.post("/auth/complete-security-check", payload),
+
+  securityLogs: () =>
+      apiClient.get("/auth/security-logs"),
+
+  requestOtp: (username) =>
+      apiClient.post("/auth/request-otp", {
+          username
+      }),
+
+  verifyOtp: (username, otp) =>
+      apiClient.post("/auth/verify-otp", {
+          username,
+          otp
+      })
+
+};
+
+export const marketAPI = {
+
+  getMarketData: async () => {
+      return {
+          data: {
+              indices: [],
+              news: [],
+              watchlist: []
+          }
+      };
+  }
+
 };
