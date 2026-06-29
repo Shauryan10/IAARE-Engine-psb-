@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authAPI, iaareAPI} from '../services/api';
+import { authAPI} from '../services/api';
 
 
 // Inline SVG for a minimal shield brand mark (matches Sidebar aesthetic, red version)
@@ -97,10 +97,22 @@ const LoginPage = ({ onLogin, onShowRegister }) => {
   
     try {
       // Step 1 - Login
-await authAPI.login(
-  userId,
-  password
-);
+      const loginResponse = await authAPI.login(
+        userId,
+        password
+    );
+    
+    if (loginResponse.data.access_token) {
+        localStorage.setItem(
+            "access_token",
+            loginResponse.data.access_token
+        );
+    
+        localStorage.setItem(
+            "refresh_token",
+            loginResponse.data.refresh_token
+        );
+    }
 
 // Step 2 - Run Security Check
 const payload = {
@@ -138,21 +150,23 @@ const payload = {
           });
         }
         
-      else if (
-          decision === "require_otp"
-        ) {
+      else if (decision === "require_otp") {
+
+          await authAPI.requestOtp(userId);
+      
           setShowOtp(true);
-        }
-        
-      else if (
-          decision === "require_otp_plus_authenticator"
-        ) {
-          setShowOtp(true);
-        
-          setError(
-            "High Risk Login Detected. OTP + Authenticator Verification Required."
-          );
-        }
+      
+      }
+      else if (decision === "require_otp_plus_authenticator") {
+
+        await authAPI.requestOtp(userId);
+    
+        setShowOtp(true);
+    
+        setError(
+          "High Risk Login Detected. OTP + Authenticator Verification Required."
+        );
+    }
         
       else if (
           decision === "block"
@@ -184,24 +198,38 @@ const payload = {
 
   const handleOtpVerify = async (e) => {
     e.preventDefault();
+  
     if (otpCode.length !== 6) {
-      setError('Please enter a valid 6-digit verification code.');
+      setError("Please enter a valid 6-digit OTP.");
       return;
     }
-
-    setError('');
+  
+    setError("");
     setIsLoading(true);
-
+  
     try {
       const response = await authAPI.verifyOtp(userId, otpCode);
-      const { access_token, refresh_token } = response.data;
-      
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('refresh_token', refresh_token);
-      
-      onLogin({ userId, accountType });
+  
+      console.log("OTP RESPONSE:", response.data);
+  
+      if (response.data.status === "success") {
+  
+        // Authenticator app will be added later
+        onLogin({
+          userId,
+          accountType
+        });
+  
+      } else {
+        setError(response.data.message || "Invalid OTP");
+      }
+  
     } catch (err) {
-      setError(err.message || 'Invalid verification code.');
+      setError(
+        err.response?.data?.detail?.message ||
+        err.response?.data?.detail ||
+        "OTP verification failed."
+      );
     } finally {
       setIsLoading(false);
     }
